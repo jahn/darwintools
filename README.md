@@ -9,3 +9,15 @@ The Darwin model is documented
 as a part of the MITgcm.
 
 This package is developed on [github](https://github.com/jahn/darwintools).
+
+To test any changes to darwintools, do the following
+1. Check out the submodule with reference data:
+```
+    git submodule init
+    git submodule update
+```
+2. Install the needed python versions (python3.7 through python3.12).
+3. Install tox: https://tox.wiki/en/4.15.0/installation.html.
+   On a mac, it may be necessary to install pipx via macports/brew
+   or use the "pip" method.
+4. Run "tox".

@@ -5,6 +5,7 @@ Created on Thu Apr 13 08:34:30 2023
 @author: EGavilan Pascual-Ahuir
 """
 import darwintools as mit
+import MITgcmutils.plotting as mitplot
 import numpy as np
 
 bathy=[-1026, -1051, -1323, -1070,  -518,  -212,  -247,  -215,  -177,  -176,  -169,  -163,  -159,  -145,  -133,  -138,  -131,  -124,  -117,  -111,  -106,   -66,   -20,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
@@ -101,14 +102,14 @@ def eg_tilemap():
     # Example
 
     print('Example 1: Output tilemap without specific tile')
-    print('mit.tilecmap(bathy, 5, 5)')
+    print('mitplot.tilecmap(bathy, 5, 5)')
 
-    mit.tilecmap(bathy, 5, 5)
+    mitplot.tilecmap(bathy, 5, 5)
 
     print('Example 2: Output tilemap without specific tile')
-    print('mit.tilecmap(bathy, 5, 5, 66, sel_zoom=4)')
+    print('mitplot.tilecmap(bathy, 5, 5, 66, sel_zoom=4)')
 
-    mit.tilecmap(bathy, 5, 5, 66, sel_zoom=4)
+    mitplot.tilecmap(bathy, 5, 5, 66, sel_zoom=4)
 
 def eg_hfac():
     """Example grid mask generator
