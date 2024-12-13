@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from matplotlib.colors import ListedColormap
 from mpl_toolkits.axes_grid1.inset_locator import (mark_inset,inset_axes,
-                                                  zoomed_inset_axes)
+                                                   zoomed_inset_axes)
 __doc__ = """
 Utilities for MITgcm.
 """
@@ -68,54 +68,57 @@ def gen_blanklist(depth, sNx, sNy, tilemap=False,fill_value=0):
     blank = []
     tile_order = np.zeros([nPy, nPx], dtype=int)
     for n in range(0, nPy):
-      for m in range(0, nPx):
-        tile_sum = np.sum(depth[n*sNy:(n+1)*sNy, m*sNx:(m+1)*sNx])
-        tile_order[n, m] = int(n*nPx+m+1)
-        if tile_sum == 0:  # the tile with only land cells
-          blank.append(tile_order[n, m])
+        for m in range(0, nPx):
+            tile_sum = np.sum(depth[n*sNy:(n+1)*sNy, m*sNx:(m+1)*sNx])
+            tile_order[n, m] = int(n*nPx+m+1)
+            if tile_sum == 0:  # the tile with only land cells
+                blank.append(tile_order[n, m])
           
     assert len(blank)>0,'There are not land tiles'
     
     if tilemap:
 
-      # plot ocean and blank tiles
-      mland = np.copy(depth)
-      mland[mland!=fill_value] = 1
-      mland[mland==fill_value] = np.nan
+        # plot ocean and blank tiles
+        mland = np.copy(depth)
+        mland[mland!=fill_value] = 1
+        mland[mland==fill_value] = np.nan
 
-      [cn_x, cn_y] = np.meshgrid(np.arange(sNx//2, Nx, sNx),
-                                np.arange(sNy//2, Ny, sNy))
-      p0 = 0
-      fig = plt.figure()
-      ax = fig.add_subplot(111)
-      ax.pcolormesh(mland,cmap=cmap_lm)
-      major_xticks = np.arange(0, Nx+sNx, sNx)
-      major_yticks = np.arange(0, Ny+sNy, sNy)
-      for a, b, c in zip(cn_x.flat, cn_y.flat, tile_order.flat):
-        if c==blank[p0]:
-         rect = patches.Rectangle((a-sNx//2, b-sNy//2),
-                 sNx, sNy, linewidth=2,edgecolor='r', facecolor='none')
-         ax.add_patch(rect)
-         rect.set_clip_path(rect)
-         p0+=1
-        ax.annotate(str(c), (a, b), color='black',
-                    ha='center', va='center')
-        if p0==len(blank):p0=0
-      ax.set_xticks(major_xticks)
-      ax.set_yticks(major_yticks)
-      ax.set_aspect('equal', adjustable='box')
-      ax.set_xlim([0,Nx])
-      ax.set_ylim([0,Ny])
-      ax.set_xlabel('x')
-      ax.set_ylabel('y')
+        [cn_x, cn_y] = np.meshgrid(np.arange(sNx//2, Nx, sNx),
+                                   np.arange(sNy//2, Ny, sNy))
+        p0 = 0
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.pcolormesh(mland,cmap=cmap_lm)
+        major_xticks = np.arange(0, Nx+sNx, sNx)
+        major_yticks = np.arange(0, Ny+sNy, sNy)
+        for a, b, c in zip(cn_x.flat, cn_y.flat, tile_order.flat):
+            if c==blank[p0]:
+                rect = patches.Rectangle((a-sNx//2, b-sNy//2),
+                        sNx, sNy, linewidth=2,edgecolor='r', facecolor='none')
+                ax.add_patch(rect)
+                rect.set_clip_path(rect)
+                p0+=1
 
-      ax.grid()
+            ax.annotate(str(c), (a, b), color='black',
+                        ha='center', va='center')
+            if p0==len(blank):
+                p0=0
 
-      return blank,fig
+        ax.set_xticks(major_xticks)
+        ax.set_yticks(major_yticks)
+        ax.set_aspect('equal', adjustable='box')
+        ax.set_xlim([0,Nx])
+        ax.set_ylim([0,Ny])
+        ax.set_xlabel('x')
+        ax.set_ylabel('y')
+
+        ax.grid()
+
+        return blank,fig
 
     else:
 
-      return blank
+        return blank
 
 
 def hfac(depth,rF,hFacMin=0.3,hFacMinDr=50,htype='C'):
@@ -171,19 +174,19 @@ def hfac(depth,rF,hFacMin=0.3,hFacMinDr=50,htype='C'):
     hFacW = np.zeros([Nr,Ny,Nx])
     hFacS = np.zeros([Nr,Ny,Nx])
     for k in range(0,Nr):
-      hFacMnSz = np.max([hFacMin, np.min([hFacMinDr*recip_drF[k],1])])
-
-#     Calculate lopping factor hFacC :
-      hFac_loc = (rF[k]-depth)*recip_drF[k]
-      hFac_loc = np.minimum(np.maximum(hFac_loc, 0 ) , 1)
-#     o Impose minimum fraction and/or size (dimensional)
-      hFac_loc[hFac_loc < hFacMnSz/2]=np.nan
-      hFac_loc[depth >= 0]=np.nan
-      hFac_loc = np.maximum(hFac_loc, hFacMnSz)
-      hFac_loc[np.isnan(hFac_loc)]=0
-      hFacC[k,:,:] = hFac_loc
-      hFacW[k,:,1:Nx] = np.minimum(hFacC[k,:,1:Nx],hFacC[k,:,0:Nx-1])
-      hFacS[k,1:Ny,:] = np.minimum(hFacC[k,1:Ny,:],hFacC[k,0:Ny-1,:])
+        hFacMnSz = np.max([hFacMin, np.min([hFacMinDr*recip_drF[k],1])])
+       
+#       Calculate lopping factor hFacC :
+        hFac_loc = (rF[k]-depth)*recip_drF[k]
+        hFac_loc = np.minimum(np.maximum(hFac_loc, 0 ) , 1)
+#       o Impose minimum fraction and/or size (dimensional)
+        hFac_loc[hFac_loc < hFacMnSz/2]=np.nan
+        hFac_loc[depth >= 0]=np.nan
+        hFac_loc = np.maximum(hFac_loc, hFacMnSz)
+        hFac_loc[np.isnan(hFac_loc)]=0
+        hFacC[k,:,:] = hFac_loc
+        hFacW[k,:,1:Nx] = np.minimum(hFacC[k,:,1:Nx],hFacC[k,:,0:Nx-1])
+        hFacS[k,1:Ny,:] = np.minimum(hFacC[k,1:Ny,:],hFacC[k,0:Ny-1,:])
 
     hfac_dic = {}
     hfac_dic['C'] = hFacC
@@ -191,6 +194,7 @@ def hfac(depth,rF,hFacMin=0.3,hFacMinDr=50,htype='C'):
     hfac_dic['W'] = hFacW
 
     return tuple(hfac_dic[i] for i in htype)
+
 
 def readbin(fname, ndims, dataprec='float32', machineformat='b'):
     """
@@ -282,15 +286,14 @@ def tilecmap(arr, sNx, sNy, tilen=None, sel_zoom=5, fill_value=0):
     tile_order = np.zeros([nTy, nTx], dtype=int)
 
     for n in range(0, nTy):
-      for m in range(0, nTx):
-        tile_order[n, m] = int(n*nTx+m+1)
+        for m in range(0, nTx):
+            tile_order[n, m] = int(n*nTx+m+1)
 
     [cn_x, cn_y] = np.meshgrid(np.arange(sNx//2, Nx, sNx),
-                                np.arange(sNy//2, Ny, sNy))
+                               np.arange(sNy//2, Ny, sNy))
 
     major_xticks = np.arange(0, Nx+sNx, sNx)
     major_yticks = np.arange(0, Ny+sNy, sNy)
-
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -302,40 +305,41 @@ def tilecmap(arr, sNx, sNy, tilen=None, sel_zoom=5, fill_value=0):
 
     if tilen is not None:
 
-     [Tind]=np.argwhere(tile_order==tilen)
+        [Tind]=np.argwhere(tile_order==tilen)
 
-     #Select position for the zoom inseting
-     if (Tind[0]>nTy/2):
-       if(Tind[1]>nTx//2):locz=2; locm1=1; locm2=4; cbar_pos=-0.1
-       else:locz=1; locm1=2; locm2=3; cbar_pos=1.05
-     else:
-       if(Tind[1]>nTx//2):locz=1; locm1=3; locm2=4; cbar_pos=1.05
-       else:locz=2; locm1=3; locm2=4; cbar_pos=-0.1
+        #Select position for the zoom inseting
+        if (Tind[0]>nTy/2):
+            if(Tind[1]>nTx//2):locz=2; locm1=1; locm2=4; cbar_pos=-0.1
+            else:locz=1; locm1=2; locm2=3; cbar_pos=1.05
+        else:
+            if(Tind[1]>nTx//2):locz=1; locm1=3; locm2=4; cbar_pos=1.05
+            else:locz=2; locm1=3; locm2=4; cbar_pos=-0.1
+   
+        #Select colorbar range for zoom
+        Tix = Tind[1]*sNx;  Tiy = Tind[0]*sNy
+        arrmin = np.nanmin(arr[Tiy:Tiy+sNy,Tix:Tix+sNx])
+        arrmax = np.nanmax(arr[Tiy:Tiy+sNy,Tix:Tix+sNx])
+   
+        ax2 = zoomed_inset_axes(ax, zoom=sel_zoom, loc=locz, borderpad=-1)
+        pc=ax2.pcolormesh(arr,vmin=arrmin,vmax=arrmax,cmap=plt.cm.jet)
+   
+        ax2.set_xlim([major_xticks[Tind[1]],major_xticks[Tind[1]]+sNx])
+        ax2.set_ylim([major_yticks[Tind[0]],major_xticks[Tind[0]]+sNy])
+        mark_inset(ax, ax2, loc1=locm1, loc2=locm2, fc="none", lw=1.5, ec='0')
+        plt.xticks(visible=False)
+        plt.yticks(visible=False)
+        cax = inset_axes(ax2,
+                         width="5%",
+                         height="100%",
+                         loc="lower left",
+                         bbox_to_anchor=(cbar_pos,0,1,1),
+                         bbox_transform=ax2.transAxes,
+                         borderpad=0,
+                         )
+        cbar=plt.colorbar(pc,cax=cax, orientation='vertical')
+        if cbar_pos<0:
+            cax.yaxis.tick_left()
 
-     #Select colorbar range for zoom
-     Tix = Tind[1]*sNx;  Tiy = Tind[0]*sNy
-     arrmin = np.nanmin(arr[Tiy:Tiy+sNy,Tix:Tix+sNx])
-     arrmax = np.nanmax(arr[Tiy:Tiy+sNy,Tix:Tix+sNx])
-
-     ax2 = zoomed_inset_axes(ax, zoom=sel_zoom, loc=locz, borderpad=-1)
-     pc=ax2.pcolormesh(arr,vmin=arrmin,vmax=arrmax,cmap=plt.cm.jet)
-
-     ax2.set_xlim([major_xticks[Tind[1]],major_xticks[Tind[1]]+sNx])
-     ax2.set_ylim([major_yticks[Tind[0]],major_xticks[Tind[0]]+sNy])
-     mark_inset(ax, ax2, loc1=locm1, loc2=locm2, fc="none", lw=1.5, ec='0')
-     plt.xticks(visible=False)
-     plt.yticks(visible=False)
-     cax = inset_axes(ax2,
-                      width="5%",
-                      height="100%",
-                      loc="lower left",
-                      bbox_to_anchor=(cbar_pos,0,1,1),
-                      bbox_transform=ax2.transAxes,
-                      borderpad=0,
-                      )
-     cbar=plt.colorbar(pc,cax=cax, orientation='vertical')
-     if cbar_pos<0:
-      cax.yaxis.tick_left()
     ax.set_xticks(major_xticks)
     ax.set_yticks(major_yticks)
     ax.set_aspect('equal', adjustable='box')
@@ -346,7 +350,6 @@ def tilecmap(arr, sNx, sNy, tilen=None, sel_zoom=5, fill_value=0):
     ax.grid()
 
     return fig
-
 
 
 def writebin(fname, arr, dataprec='float32', machineformat='b'):
