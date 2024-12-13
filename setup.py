@@ -4,11 +4,11 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="MITgcmutils",
+    name="darwintools",
     version="0.2.1",
     author="MITgcm Developers and Contributors",
     author_email="mitgcm-support@mitgcm.org",
-    description="Python utilities for MITgcm",
+    description="Python tools for MITgcm and Darwin",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="http://mitgcm.org/",

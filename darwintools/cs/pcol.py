@@ -27,7 +27,7 @@ def pcol( x, y, data, projection=None, vmin=None, vmax=None, **kwargs):
     Example
     -------
     >>> from mpl_toolkits.basemap import Basemap
-    >>> import MITgcmutils as mit
+    >>> import darwintools as mit
     >>> import matplotlib.pyplot as plt
     >>> from sq import sq
     >>>

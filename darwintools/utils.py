@@ -82,9 +82,9 @@ def gen_blanklist(depth, sNx, sNy, tilemap=False,fill_value=0):
         mland = np.copy(depth)
         mland[mland!=fill_value] = 1
         mland[mland==fill_value] = np.nan
-
+ 
         [cn_x, cn_y] = np.meshgrid(np.arange(sNx//2, Nx, sNx),
-                                   np.arange(sNy//2, Ny, sNy))
+                                  np.arange(sNy//2, Ny, sNy))
         p0 = 0
         fig = plt.figure()
         ax = fig.add_subplot(111)
@@ -98,12 +98,10 @@ def gen_blanklist(depth, sNx, sNy, tilemap=False,fill_value=0):
                 ax.add_patch(rect)
                 rect.set_clip_path(rect)
                 p0+=1
-
             ax.annotate(str(c), (a, b), color='black',
                         ha='center', va='center')
             if p0==len(blank):
                 p0=0
-
         ax.set_xticks(major_xticks)
         ax.set_yticks(major_yticks)
         ax.set_aspect('equal', adjustable='box')

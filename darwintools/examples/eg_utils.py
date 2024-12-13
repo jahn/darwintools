@@ -4,7 +4,7 @@ Created on Thu Apr 13 08:34:30 2023
 
 @author: EGavilan Pascual-Ahuir
 """
-import MITgcmutils as mit
+import darwintools as mit
 import numpy as np
 
 bathy=[-1026, -1051, -1323, -1070,  -518,  -212,  -247,  -215,  -177,  -176,  -169,  -163,  -159,  -145,  -133,  -138,  -131,  -124,  -117,  -111,  -106,   -66,   -20,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
