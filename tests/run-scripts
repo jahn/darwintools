@@ -1,0 +1,41 @@
+#!/bin/bash
+v="$1"
+if test -n "$v"; then
+  . .tox/$v/bin/activate
+fi
+
+err=0
+for f in \
+  global_ocean.cs32x15/grid \
+  global_ocean.cs32x15/state.0000072000 \
+  global_ocean.cs32x15/oceDiag.0000072000 \
+  global_ocean.cs32x15/phiHyd.0000072000 \
+  global_ocean.cs32x15/phiHydLow.0000072000 \
+  eccov3/dic_tave.0000025920
+  do
+  echo "# $f"
+  o="$(basename $f)"
+  scripts/gluemncbig -q -o $o.nc tests/data/$f.*.nc
+  retval=$?
+  if [ $retval -ne 0 ]; then
+    echo "gluemncbig failed on $f"
+    err=1
+  else
+    ncdump -h $o.nc | grep -v build_ | grep -v MITgcm_version > $o.cdl
+    ncdump $o.nc | grep -v build_ | grep -v MITgcm_version | cksum > $o.crc
+    if ! diff tests/nc/$f.cdl $o.cdl; then
+      echo "Metadata doesn't match reference: $f"
+      err=1
+    fi
+    if ! diff tests/nc/$f.crc $o.crc; then
+      echo "Checksum doesn't match reference: $f"
+      err=1
+    else
+      rm $o.cdl $o.crc $o.nc
+    fi
+  fi
+done
+if [ "$err" = 1 ]; then
+  echo "Some comparisons failed."
+  exit 1
+fi
