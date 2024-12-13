@@ -6,7 +6,6 @@ from .mnc import rdmnc, mnc_files
 from .conversion import *
 from .utils import *
 from . import llc
-from . import examples
 from . import density as dens
 from . import mds
 

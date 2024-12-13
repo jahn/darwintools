@@ -41,11 +41,6 @@ def tilecmap(arr, sNx, sNy, tilen=None, sel_zoom=5, fill_value=0):
     >>> [fig]=tilecmap(bathy, 5, 5)
     >>> [fig]=tilecmap(bathy, 5, 5, 66, sel_zoom=4)
 
-    Example
-    -------
-    >>> eg_tilemap()
-
-
     """
 
     #Check dimensions of arr

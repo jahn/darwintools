@@ -46,11 +46,6 @@ def gen_blanklist(depth, sNx, sNy, tilemap=False,fill_value=0):
     >>> [blank,fig]=gen_blanklist(bathy, 5, 5, tilemap=True)
     10,11,12,..,103
 
-    Example
-    -------
-    >>> eg_blanklist()
-    10,11,12,..,103
-
     """
 
     assert depth.ndim==2,'check_stp: depth must be 2D'
@@ -143,10 +138,6 @@ def hfac(depth,rF,hFacMin=0.3,hFacMinDr=50,htype='C'):
     Usage
     -----
     >>> [hFacC]=mit.hfac(depth,rF,0.3,50,'C')
-
-    Example
-    -------
-    >>> [hFacC]=eg_hfac()
 
     Notes
     -----
