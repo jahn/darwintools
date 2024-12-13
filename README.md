@@ -1,10 +1,11 @@
-# MITgcmutils
+# Darwintools
 
-Python utilities for the MIT General Circulation Model,
-[MITgcm](http://mitgcm.org).
+Python tools for the Darwin ecosystem model, see the
+[darwinproject](https://darwinproject.mit.edu/), and the
+MIT General Circulation Model, [MITgcm](http://mitgcm.org), in general.
 
-This package is developed as a part of MITgcm on
-[github](https://github.com/MITgcm/MITgcm/tree/master/utils/python/MITgcmutils).
+The Darwin model is documented
+[here](http://darwin3.rtfd.io/en/latest/phys_pkgs/darwin.html)
+as a part of the MITgcm.
 
-It is documented in the MITgcm
-[manual](http://mitgcm.rtfd.io/en/latest/utilities/utilities.html#mitgcmutils).
+This package is developed on [github](https://github.com/jahn/darwintools).
